@@ -25,9 +25,9 @@
 
 // MIT License
 
-const RefParser = require('json-schema-ref-parser');
+import RefParser from 'json-schema-ref-parser';
 
-module.exports = function() {
+export default function() {
 
     const $RefParser = new RefParser();
     const jsonSchemaAvro = {}
@@ -498,4 +498,4 @@ module.exports = function() {
     }
 
     return jsonSchemaAvro;
-}
+};

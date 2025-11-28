@@ -1,30 +1,30 @@
-var gulp = require('gulp');
-var rename = require('gulp-rename');
-var inject = require('gulp-inject');
-var jeditor = require("gulp-json-editor");
-var File = require('vinyl');
-var colors = require('ansi-colors');
-var log = require('./log');
-var replace = require('gulp-replace');
-var path = require('path');
-var fs = require('fs');
-var traverse = require('traverse');
-var stream = require('stream');
-var merge = require('merge-stream');
-var through = require('through2');
-var yaml = require('yamljs');
-var params = require('./params');
-var generateEnv = require('./generate-env');
-var fse = require('fs-extra');
-const Stream = require('stream');
-const StreamUtils = require('./util/stream-utils');
-const PathV3Generator = require('./path-v3-generator/path-v3-generator');
-const JavaGen = require('./java-gen');
-const {JSONPath} = require('jsonpath-plus');
-const jsonSchemaAvro = require('./generate-avro');
-const migrate = require("./schema-migrate");
+import gulp from 'gulp';
+import rename from 'gulp-rename';
+import inject from 'gulp-inject';
+import jeditor from "gulp-json-editor";
+import File from 'vinyl';
+import colors from 'ansi-colors';
+import log from './log';
+import replace from 'gulp-replace';
+import path from 'path';
+import fs from 'fs';
+import traverse from 'traverse';
+import stream from 'stream';
+import merge from 'merge-stream';
+import through from 'through2';
+import yaml from 'yamljs';
+import params from './params';
+import generateEnv from './generate-env';
+import fse from 'fs-extra';
+import Stream from 'stream';
+import StreamUtils from './util/stream-utils';
+import PathV3Generator from './path-v3-generator/path-v3-generator';
+import JavaGen from './java-gen';
+import {JSONPath} from 'jsonpath-plus';
+import jsonSchemaAvro from './generate-avro';
+import migrate from "./schema-migrate";
 
-module.exports = {
+export default {
     generate: function (defaults, source, dest, done) {
         var uiPath = path.resolve(dest, 'ui');
         var apikanaPath = path.resolve(__dirname, '..');

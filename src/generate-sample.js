@@ -1,16 +1,16 @@
-var gulp = require('gulp');
-var File = require('vinyl');
-var colors = require('ansi-colors');
-var log = require('./log');
-var path = require('path');
-var fs = require('fs');
-var through = require('through2');
-const jsf = require('json-schema-faker');
-var str = require('string-to-stream');
-var vinylSource = require('vinyl-source-stream');
-const slash = require('slash');
+import gulp from 'gulp';
+import File from 'vinyl';
+import colors from 'ansi-colors';
+import log from './log';
+import path from 'path';
+import fs from 'fs';
+import through from 'through2';
+import jsf from 'json-schema-faker';
+import str from 'string-to-stream';
+import vinylSource from 'vinyl-source-stream';
+import slash from 'slash';
 
-module.exports = {
+export default {
     generateSample: function (source, dest, typeNames) {
 
         function readdir(basedir, relativeTo) {

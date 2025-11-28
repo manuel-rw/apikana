@@ -1,6 +1,6 @@
-var log = require('./log');
-var colors = require('ansi-colors');
-var typescript = require('typescript');
+import log from './log';
+import colors from 'ansi-colors';
+import typescript from 'typescript';
 
 //important: patch readFile before require typescript-to-json-schema-extra
 var readFile = typescript.sys.readFile;
@@ -20,10 +20,10 @@ function isTsFilename(name) {
     return name.substring(name.length - 3) === '.ts' && name.substring(name.length - 5) !== '.d.ts';
 }
 
-var tjs = require('typescript-to-json-schema-extra/dist');
-var program = require('typescript-to-json-schema-extra/dist/factory/program');
-var parser = require('typescript-to-json-schema/dist/factory/parser');
-var formatter = require('typescript-to-json-schema/dist/factory/formatter');
+import tjs from 'typescript-to-json-schema-extra/dist';
+import program from 'typescript-to-json-schema-extra/dist/factory/program';
+import parser from 'typescript-to-json-schema/dist/factory/parser';
+import formatter from 'typescript-to-json-schema/dist/factory/formatter';
 
 exports = {
     generate: function (tsconfig, files) {

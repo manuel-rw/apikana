@@ -1,12 +1,12 @@
-var timestamp = require('time-stamp');
-var colors = require('ansi-colors');
+import timestamp from 'time-stamp';
+import colors from 'ansi-colors';
 
 function getTimestamp() {
     return '[' + timestamp('HH:mm:ss') + ']';
 }
 
 function log() {
-    module.exports.info.apply(null, arguments)
+    info(...arguments);
     return this;
 }
 
@@ -51,18 +51,27 @@ function numLevel(level) {
     }
 }
 
-function setNumLevel(level) {
-    module.exports.error = level >= 0 ? error : nop;
-    module.exports.warn = level >= 1 ? warn : nop;
-    module.exports.info = level >= 2 ? info : nop;
-    module.exports.debug = level >= 3 ? debug : nop;
+let level = 0;
 
-    function nop() {
-    }
+function setNumLevel(innerLevel) {
+    level = innerLevel;
 }
 
-module.exports = log;
-module.exports.setLevel = setLevel;
+function nop() {}
+
+const errOps = error => (level >= 0 ? error: nop);
+const warnOps = error => (level >= 1 ? warn: nop);
+const infoOps = error => (level >= 2 ? info: nop);
+const debugOps = error => (level >= 3 ? debug: nop);
+
+export default {
+    log,
+    setLevel,
+    error: errOps,
+    warn: warnOps,
+    info: infoOps,
+    debug: debugOps
+};
 
 setLevel('info');
 

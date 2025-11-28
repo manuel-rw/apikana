@@ -1,6 +1,6 @@
-var migrator = require("json-schema-migrate");
+import migrator from "json-schema-migrate";
 
-module.exports = {
+export default {
     migrateSchemaToLatestVersion: function (schema) {
 
         var schemaCopy = Object.assign({}, schema);
@@ -27,4 +27,4 @@ module.exports = {
         }
         return data;
     }
-}
+};

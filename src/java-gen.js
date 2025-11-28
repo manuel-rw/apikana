@@ -14,7 +14,7 @@ for (var i = 0; i < reservedWords.length; i++) {
     reserved[reservedWords[i]] = true;
 }
 
-module.exports = {
+export default {
     constOf: constOf,
     classOf: classOf,
     fieldOf: fieldOf,

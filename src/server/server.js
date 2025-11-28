@@ -1,9 +1,9 @@
-var path = require('path');
-var fs = require('fs');
-var opn = require('opn');
-var params = require('../params');
+import path from 'path';
+import fs from 'fs';
+import opn from 'opn';
+import params from '../params';
 
-module.exports = {
+export default {
     start: function (source, dest, port) {
         var dependencyPath = params.dependencyPath();
         var sourceRelDependencyPath = path.relative(

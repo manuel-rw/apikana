@@ -1,9 +1,9 @@
-const fs = require('fs');
-const os = require('os');
-const path = require('path');
-const slash = require('slash');
+import fs from 'fs';
+import os from 'os';
+import path from 'path';
+import slash from 'slash';
 
-module.exports = function (plop, cfg) {
+export default function (plop, cfg) {
     const { defaults } = cfg;
     const defaultsDir = defaults && defaults.dir || path.join(os.tmpdir(), 'apikana-plugin-packages', 'apikana-defaults')
 

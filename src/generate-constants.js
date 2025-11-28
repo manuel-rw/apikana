@@ -1,17 +1,17 @@
-var through = require('through2');
-var path = require('path');
-var log = require('./log');
-var colors = require('ansi-colors');
-var fs = require('fs');
-var yaml = require('yamljs');
-var params = require('./params');
-var JavaPathsGen = require('./generate-java-paths');
-var JavaPathVarsGen = require('./generate-java-path-vars');
-var JavaBuilderGen = require('./generate-java-builder');
-var OldJavaGen = require('./generate-old-java-constants');
-var TsGen = require('./generate-ts-constants');
+import through from 'through2';
+import path from 'path';
+import log from './log';
+import colors from 'ansi-colors';
+import fs from 'fs';
+import yaml from 'yamljs';
+import params from './params';
+import JavaPathsGen from './generate-java-paths';
+import JavaPathVarsGen from './generate-java-path-vars';
+import JavaBuilderGen from './generate-java-builder';
+import OldJavaGen from './generate-old-java-constants';
+import TsGen from './generate-ts-constants';
 
-module.exports = {
+export default {
     generate: function (source, dest, options) {
         if( !options ){ options = {}; }
         const generate1stGenPaths = !!options.generate1stGenPaths;

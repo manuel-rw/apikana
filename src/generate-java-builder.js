@@ -1,10 +1,10 @@
-var File = require('vinyl');
-var colors = require('ansi-colors');
-var log = require('./log');
-var gen = require('./java-gen');
-var urlUtils = require('./url-utils');
+import File from 'vinyl';
+import colors from 'ansi-colors';
+import log from './log';
+import gen from './java-gen';
+import urlUtils from './url-utils';
 
-module.exports = function (model, javaPackage, apiName, host, basePath) {
+export default function (model, javaPackage, apiName, host, basePath) {
     apiName += 'PathBuilder';
     var contents = '';
     return {

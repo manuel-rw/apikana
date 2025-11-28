@@ -1,14 +1,14 @@
-var colors = require('ansi-colors');
-var log = require('./log');
-var traverse = require('traverse');
-var fs = require('fs');
-var fse = require('fs-extra');
-var path = require('path');
-var schemaGen = require('./schema-gen');
-var params = require('./params');
-var migrator = require("./schema-migrate");
+import colors from 'ansi-colors';
+import log from './log';
+import traverse from 'traverse';
+import fs from 'fs';
+import fse from 'fs-extra';
+import path from 'path';
+import schemaGen from './schema-gen';
+import params from './params';
+import migrator from "./schema-migrate";
 
-module.exports = {
+export default {
     mkdirs: mkdirs,
     generate: function (tsconfig, files, modelnames, dest, dependencyPath) {
         mkdirs(dest);

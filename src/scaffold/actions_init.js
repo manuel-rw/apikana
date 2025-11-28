@@ -1,4 +1,4 @@
-const nodePlop = require("node-plop");
+import nodePlop from "node-plop";
 const plop = nodePlop(__dirname +`/../plopfile_init.js`, { defaults: {} });
 
 const generator = plop.getGenerator('init');

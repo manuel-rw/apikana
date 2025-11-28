@@ -1,10 +1,8 @@
 
 
-exports.dropLeadingSlashes = dropLeadingSlashes;
-
-exports.dropTrailingSlashes = dropTrailingSlashes;
-
-exports.dropSurroundingSlashes = dropSurroundingSlashes;
+export {dropLeadingSlashes};
+export {dropTrailingSlashes};
+export {dropSurroundingSlashes};
 
 
 // Private ////////////////////////////////////////////////////////////////////

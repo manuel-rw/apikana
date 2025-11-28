@@ -1,18 +1,27 @@
 #!/usr/bin/env node
-var path = require('path');
-var fs = require('fs');
-var log = require('../src/log');
-var colors = require('ansi-colors');
-var params = require('../src/params');
-var compareVersions = require('compare-versions');
-var packge = require('../package.json');
-var yaml = require('yamljs');
-var argc = process.argv.length;
+import path from 'path';
+import fs from 'fs';
+import log from '../src/log.js';
+import colors from 'ansi-colors';
+import params from '../src/params.js';
+import compareVersions from 'compare-versions';
+import packge from '../package.json' with { type: "json" };
+import yaml from 'yamljs';
+import nodePlop from "node-plop";
+import registryUrl from 'registry-url';
+import os from 'os';
+import pluginManager from 'live-plugin-manager';
+import { pathToFileURL, fileURLToPath } from 'url';
+import validatorjs from 'validatorjs';
 
-require('../src/logo');
+var argc = process.argv.length;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+import ('../src/logo.js');
 
 if (!process.version.startsWith('v22')) {
-    log(colors.bold(colors.red('Expected node version v22.x.x but current version is ' + process.version + '. Use nvm (windows: https://github.com/coreybutler/nvm-windows, linux: https://github.com/nvm-sh/nvm) to manage node versions.')));
+    log.log.log(colors.bold(colors.red('Expected node version v22.x.x but current version is ' + process.version + '. Use nvm (windows: https://github.com/coreybutler/nvm-windows, linux: https://github.com/nvm-sh/nvm) to manage node versions.')));
     process.exit(1);
 }
 
@@ -20,8 +29,8 @@ if (argc === 2) {
     help();
 } else {
     if (params.minVersion() && compareVersions(params.minVersion(), packge.version) > 0) {
-        log(colors.gray('Expected minimum version'), params.minVersion(), colors.gray('but current version is'), packge.version);
-        log(colors.gray('Please update the global apikana installation:'), 'npm install -g apikana');
+        log.log(colors.gray('Expected minimum version'), params.minVersion(), colors.gray('but current version is'), packge.version);
+        log.log(colors.gray('Please update the global apikana installation:'), 'npm install -g apikana');
         process.exit(1);
     }
     switch (process.argv[2]) {
@@ -33,7 +42,7 @@ if (argc === 2) {
             break;
         case 'stop':
             require('../src/server/stop').stop(params.port(), function () {
-                log('Stopped');
+                log.log('Stopped');
             });
             break;
         case 'create-sample':
@@ -49,46 +58,46 @@ if (argc === 2) {
 }
 
 function help() {
-    log(colors.bold('apikana help'), '                             Show this help.');
-    log(colors.bold('apikana init'), '                             Initialize a new API project.');
-    log(colors.bold('apikana start'), ' [source] [options]         Generate JSON schemas and HTML documentation from the API.');
-    log('               source', '                    Directory containing the APIs and models. Default: src');
-    log(colors.gray('             --api=<file>'), '                The main api file (yaml or json). Default: openapi/api.yaml');
-    log(colors.gray('             --models=<path>'), '             The directory containing the models, if no api file is given.\n' +
+    log.log(colors.bold('apikana help'), '                             Show this help.');
+    log.log(colors.bold('apikana init'), '                             Initialize a new API project.');
+    log.log(colors.bold('apikana start'), ' [source] [options]         Generate JSON schemas and HTML documentation from the API.');
+    log.log('               source', '                    Directory containing the APIs and models. Default: src');
+    log.log(colors.gray('             --api=<file>'), '                The main api file (yaml or json). Default: openapi/api.yaml');
+    log.log(colors.gray('             --models=<path>'), '             The directory containing the models, if no api file is given.\n' +
         '                                                     Default: ts');
-    log(colors.gray('             --style=<path>'), '              The directory containing css files for the swagger GUI.\n' +
+    log.log(colors.gray('             --style=<path>'), '              The directory containing css files for the swagger GUI.\n' +
         '                                                     Default: style');
-    log(colors.gray('             --config=<file>'), '             Read additional options from a file in JSON format.');
-    log(colors.gray('             --javaPackage=<name>'), '        Java package to use.');
-    log(colors.gray('             --pathPrefix=<prefix>'), '       The common prefix for api paths to be used in generated *Paths files.\n' +
+    log.log(colors.gray('             --config=<file>'), '             Read additional options from a file in JSON format.');
+    log.log(colors.gray('             --javaPackage=<name>'), '        Java package to use.');
+    log.log(colors.gray('             --pathPrefix=<prefix>'), '       The common prefix for api paths to be used in generated *Paths files.\n' +
         '                                                     Default: none');
-    log(colors.gray('             --basePath=<path>'), '           Override basePath specified in api file');
-    log(colors.gray('             --generate1stGenPaths=<boolean>'), '\n' +
+    log.log(colors.gray('             --basePath=<path>'), '           Override basePath specified in api file');
+    log.log(colors.gray('             --generate1stGenPaths=<boolean>'), '\n' +
         '                                                     Enable/disable generator for 1st generation path constants.\n' +
         '                                                     Since: v0.5.1\n' +
         '                                                     Default: true (enabled)');
-    log(colors.gray('             --generate2ndGenPaths=<boolean>'), '\n' +
+    log.log(colors.gray('             --generate2ndGenPaths=<boolean>'), '\n' +
         '                                                     Enable/disable generator for 2nd generation path constants.\n' +
         '                                                     Since: v0.5.1\n' +
         '                                                     Default: true (enabled)');
-    log(colors.gray('             --generate3rdGenPaths=<boolean>'), '\n' +
+    log.log(colors.gray('             --generate3rdGenPaths=<boolean>'), '\n' +
         '                                                     Enable/disable generator for 3rd generation path constants.\n' +
         '                                                     Since: v0.5.0\n' +
         '                                                     Default: false (disabled)');
-    log(colors.gray('             --deploy=<boolean>'), '          If the sources should be copied into the target directory. \n' +
+    log.log(colors.gray('             --deploy=<boolean>'), '          If the sources should be copied into the target directory. \n' +
         '                                                     Default: false');
-    log(colors.gray('             --dependencyPath=<path>'), '     Directory containing API dependencies.\n' +
+    log.log(colors.gray('             --dependencyPath=<path>'), '     Directory containing API dependencies.\n' +
         '                                                     Default: node_modules/-api-dependencies');
-    log(colors.gray('             --port=<number>'), '             Port to serve the HTML documentation. Default: 8333');
-    log(colors.gray('             --serve=<boolean>'), '           If the HTML documentation should be served over HTTP. Default: true');
-    log(colors.gray('             --openBrowser=<boolean>'), '     If the browser should be opened at first start. Default: true');
-    log(colors.gray('             --minVersion=<version>'), '      Fail if the current apikana version is lower than expected.');
-    log(colors.gray('             --log=<level>'), '               Set log level (debug, info, warn, error). Default: info');
-    log(colors.bold('apikana stop '), colors.gray('[options]'), '                  Stop a running server.');
-    log(colors.gray('             --port=<number>'), '             Port of the server to be stopped. Default: 8333');
+    log.log(colors.gray('             --port=<number>'), '             Port to serve the HTML documentation. Default: 8333');
+    log.log(colors.gray('             --serve=<boolean>'), '           If the HTML documentation should be served over HTTP. Default: true');
+    log.log(colors.gray('             --openBrowser=<boolean>'), '     If the browser should be opened at first start. Default: true');
+    log.log(colors.gray('             --minVersion=<version>'), '      Fail if the current apikana version is lower than expected.');
+    log.log(colors.gray('             --log=<level>'), '               Set log level (debug, info, warn, error). Default: info');
+    log.log(colors.bold('apikana stop '), colors.gray('[options]'), '                  Stop a running server.');
+    log.log(colors.gray('             --port=<number>'), '             Port of the server to be stopped. Default: 8333');
 
-    log(colors.bold('apikana create-sample '), colors.gray('[typeName]'), '        Generate samples for the space separated typeNames.');
-    log(colors.bold('apikana validate-samples'), '                 Validates the samples usind the available types.');
+    log.log(colors.bold('apikana create-sample '), colors.gray('[typeName]'), '        Generate samples for the space separated typeNames.');
+    log.log(colors.bold('apikana validate-samples'), '                 Validates the samples usind the available types.');
 }
 
 function createSample() {
@@ -108,11 +117,8 @@ function generate() {
     }
     params.readConfigFile();
 
-    log('Source: ', source);
+    log.log('Source: ', source);
 
-    const nodePlop = require("node-plop");
-    const registryUrl = require('registry-url');
-    const os = require('os');
     const currentPath = process.cwd();
     const packageJSON = JSON.parse(fs.readFileSync(path.resolve(currentPath, './package.json')));
 
@@ -123,52 +129,53 @@ function generate() {
         openapi = yaml.parse(fs.readFileSync(path.resolve(currentPath, './src/openapi/api.yaml')).toString());
     }
 
-    const PluginManager = require('live-plugin-manager').PluginManager;
-    const manager = new PluginManager({
+    const manager = new pluginManager.PluginManager({
         npmRegistryUrl: registryUrl(),
         pluginsPath: path.join(os.tmpdir(), 'apikana-plugin-packages')
     });
 
     function run(defaults) {
-        var plop = nodePlop(__dirname + '/../src/plopfile_start.js', {defaults});
-        var generator = plop.getGenerator('start');
-        const model = Object.assign({}, packageJSON, {api: openapi});
+        nodePlop(__dirname + '/../src/plopfile_start.js', {defaults}).then((plop) => {
+            var generator = plop.getGenerator('start');
+            const model = Object.assign({}, packageJSON, {api: openapi});
 
-        if (defaults.validation) {
+            if (defaults.validation) {
 
-            // Workaround for validatorjs to validate also 'paths' with wildcard
-            var openapiToValidate = JSON.parse(JSON.stringify(openapi));
-            openapiToValidate.paths = Object.values(openapiToValidate.paths);
+                // Workaround for validatorjs to validate also 'paths' with wildcard
+                var openapiToValidate = JSON.parse(JSON.stringify(openapi));
+                openapiToValidate.paths = Object.values(openapiToValidate.paths);
 
-            const Validator = require('validatorjs');
-
-            const validator = new Validator(openapiToValidate, defaults.validation);
-            if (!validator.check()) {
-                log(colors.bold(colors.red('Validation of the OpenAPI (api.yaml) has failed with ' + validator.errorCount + ' error(s).')));
-                log(colors.bold(colors.red('Validation rules your API must conform are defined in: ' + path.join(defaults.dir, 'index.js'))));
-                Object.entries(validator.errors.all()).forEach(errorEntry => {
-                    const [errorField, error] = errorEntry;
-                    log(colors.bold(colors.red(errorField + ": " + error)))
-                });
-                process.exit(1);
+                const validator = new validatorjs(openapiToValidate, defaults.validation);
+                if (!validator.check()) {
+                    log.log(colors.bold(colors.red('Validation of the OpenAPI (api.yaml) has failed with ' + validator.errorCount + ' error(s).')));
+                    log.log(colors.bold(colors.red('Validation rules your API must conform are defined in: ' + path.join(defaults.dir, 'index.js'))));
+                    Object.entries(validator.errors.all()).forEach(errorEntry => {
+                        const [errorField, error] = errorEntry;
+                        log.log(colors.bold(colors.red(errorField + ": " + error)))
+                    });
+                    process.exit(1);
+                }
             }
-        }
 
-        generator.runActions(model).then(_ => {
-            require('../src/generate').generate(defaults, path.resolve(source), params.target());
+            generator.runActions(model).then(_ => {
+                require('../src/generate').generate(defaults, path.resolve(source), params.target());
+            });
         });
     }
 
-    var defaultsVersion = packageJSON.devDependencies['apikana-defaults'];
+    const defaultsVersion = packageJSON.devDependencies['apikana-defaults'];
 
     if (defaultsVersion) {
-        if (defaultsVersion != "0.0.0") {
-            process.stdout.write("Using defaults " + defaultsVersion + "\n");
+        if (defaultsVersion !== "0.0.0") {
+            log.log("Using defaults " + defaultsVersion);
         }
-        var defaultsDir = path.join(process.cwd(), 'node_modules', 'apikana-defaults');
-        var defaults = require(defaultsDir);
-        defaults.dir = defaultsDir
-        run(defaults);
+        const defaultsDir = path.join(process.cwd(), 'node_modules', 'apikana-defaults');
+        const defaultsUrl = pathToFileURL(defaultsDir + '/index.js'); // Add entry file if needed
+
+        import(defaultsUrl).then((defaultsModule) => {
+            const defaults = { ...defaultsModule.default, dir: defaultsDir };
+            run(defaults);
+        });
     } else {
         process.stdout.write("Loading defaults... ");
         manager.install('apikana-defaults').then((e) => {
@@ -178,10 +185,10 @@ function generate() {
             defaults.dir = defaultsDir;
             var version = JSON.parse(fs.readFileSync(path.join(defaultsDir, 'package.json'))).version;
             if (version != "0.0.0") {
-                log(colors.bold(`WARNING: | The build is unpredictable because of an implicit dependency.`));
-                log(colors.bold(`         | It may break anytime when a new version of the dependency is available in the registry.`));
-                log(colors.bold(`         | To fix this, freeze the dependency in your API project:`));
-                log(colors.bold(`         |  npm install apikana-defaults@${version} --save-dev`));
+                log.log(colors.bold(`WARNING: | The build is unpredictable because of an implicit dependency.`));
+                log.log(colors.bold(`         | It may break anytime when a new version of the dependency is available in the registry.`));
+                log.log(colors.bold(`         | To fix this, freeze the dependency in your API project:`));
+                log.log(colors.bold(`         |  npm install apikana-defaults@${version} --save-dev`));
             }
             run(defaults);
         });

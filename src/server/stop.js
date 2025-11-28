@@ -1,6 +1,6 @@
-var http = require('http');
+import http from 'http';
 
-module.exports = {
+export default {
     stop: function (port, then) {
         var ended = false;
         var req = http.request({port: port, path: '/close'});

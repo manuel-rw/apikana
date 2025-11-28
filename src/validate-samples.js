@@ -1,12 +1,12 @@
-var gulp = require('gulp');
-var jeditor = require("gulp-json-editor");
-const path = require('path');
-const Ajv = require('ajv');
-const fse = require('fs-extra');
-const winston = require('winston');
-const util = require('util');
+import gulp from 'gulp';
+import jeditor from "gulp-json-editor";
+import path from 'path';
+import Ajv from 'ajv';
+import fse from 'fs-extra';
+import winston from 'winston';
+import util from 'util';
 
-module.exports = {
+export default {
     validate: function (root) {
 
         const logger = winston.createLogger({

@@ -1,11 +1,11 @@
-var rename = require('gulp-rename');
-var File = require('vinyl');
-var through = require('through2');
-var params = require('./params');
+import rename from 'gulp-rename';
+import File from 'vinyl';
+import through from 'through2';
+import params from './params';
 
 var variables = params.enrichWithParams({});
 
-module.exports = {
+export default {
     variables: function () {
         return variables;
     },

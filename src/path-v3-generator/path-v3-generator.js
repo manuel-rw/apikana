@@ -1,17 +1,16 @@
-;"use strict";
+"use strict";
 
 
-exports.createPathV3Generator = createPathV3Generator;
-
+export {createPathV3Generator};
 
 // Private ////////////////////////////////////////////////////////////////////
 
-const Stream = require( "stream" );
+import Stream from "stream";
 
-const JavaGen = require('../java-gen');
-const Log = require('../log');
-const StreamUtils = require('../util/stream-utils');
-const UrlUtils = require('../url-utils');
+import JavaGen from '../java-gen';
+import Log from '../log';
+import StreamUtils from '../util/stream-utils';
+import UrlUtils from '../url-utils';
 
 const DEBUG = (process.env.DEBUG !== undefined);
 

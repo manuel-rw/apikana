@@ -1,17 +1,16 @@
-;"use strict";
+"use strict";
 
 
-exports.createStringWritable = createStringWritable;
-exports.streamConcat = streamConcat;
-exports.streamFromError = streamFromError;
-exports.streamFromString = streamFromString;
-exports.emptyStream = emptyStream;
-exports.createLinePrefixStream = createLinePrefixStream;
-
+export {createStringWritable};
+export {streamConcat};
+export {streamFromError};
+export {streamFromString};
+export {emptyStream};
+export {createLinePrefixStream};
 
 // Private ////////////////////////////////////////////////////////////////////
 
-const Stream = require("stream");
+import Stream from "stream";
 
 
 /**

@@ -1,9 +1,10 @@
-var env = require('minimist')(process.argv.slice(2));
-var colors = require('ansi-colors');
-var log = require('./log');
-var fs = require('fs');
-var path = require('path');
-var objectPath = require('object-path');
+import minimist from 'minimist';
+import colors from 'ansi-colors';
+import log from './log.js';
+import fs from 'fs';
+import objectPath from 'object-path';
+
+const env = minimist(process.argv.slice(2));
 
 log.setLevel(env.log);
 
@@ -13,7 +14,7 @@ var packageJson = fs.existsSync('./package.json') ? JSON.parse(fs.readFileSync('
 
 const defaultDependencyPath = 'node_modules/-api-dependencies';
 
-module.exports = {
+export default {
     basePath: function () {
         return env.basePath;
     },

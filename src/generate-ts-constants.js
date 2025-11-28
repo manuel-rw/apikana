@@ -1,8 +1,8 @@
-var File = require('vinyl');
-var colors = require('ansi-colors');
-var log = require('./log');
+import File from 'vinyl';
+import colors from 'ansi-colors';
+import log from './log';
 
-module.exports = function (model, apiName, host, basePath) {
+export default function (model, apiName, host, basePath) {
     apiName+='Paths';
     var contents = '';
     var classes = {};

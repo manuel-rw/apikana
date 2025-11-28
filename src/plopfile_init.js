@@ -1,17 +1,14 @@
-const changeCase = require('change-case');
-
-const os = require("os");
-const fs = require('fs');
-const path = require('path');
-
-const slash = require('slash');
-
-var log = require('./log');
-var colors = require('ansi-colors');
+import changeCase from 'change-case';
+import os from "os";
+import fs from 'fs';
+import path from 'path';
+import slash from 'slash';
+import log from './log';
+import colors from 'ansi-colors';
 
 const apikanaVersion = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../package.json').toString())).version;
 
-module.exports = function (plop, cfg) {
+export default function (plop, cfg) {
     const { defaults, logLevel } = cfg;
 
     if(logLevel !== undefined) {
